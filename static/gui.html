@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>情感分析</title>
+</head>
+<body>
+    <h2>输入文本</h2>
+    <textarea id="textInput" rows="4" cols="50"></textarea>
+    <button onclick="analyzeText()">分析情感</button>
+    <p id="result"></p>
+
+    <script>
+        function analyzeText() {
+            var text = document.getElementById('textInput').value;
+            fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({text: text}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // 打印返回的数据，以便调试
+                document.getElementById('result').innerHTML = '情感分析结果：' + data.sentiment;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
